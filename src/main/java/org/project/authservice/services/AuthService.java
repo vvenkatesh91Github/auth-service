@@ -28,8 +28,20 @@ public class AuthService {
             if (!passwordService.matchPassword(password, user.getHashedPassword())) {
                 throw new RuntimeException("Invalid credentials");
             }
-            return jwtUtil.generateToken(user.getUsername(), user.getRoles());
+            return jwtUtil.generateToken(user.getName(), user.getRoles());
         }
         throw new RuntimeException("User not found");
+    }
+
+    public void signup(UserDTO userDTO) {
+        Optional<UserDTO> userOptional = userServiceClient.getUserByEmail(userDTO.getEmail());
+        if (userOptional.isPresent()) {
+            throw new RuntimeException("Email already in use");
+        } else {
+            userDTO.setHashedPassword(passwordService.hashPassword(userDTO.getPassword()));
+            if (userDTO.getStatus() == null) userDTO.setStatus("ACTIVE");
+            if (userDTO.getRoles() == null) userDTO.setRoles("ROLE_USER");
+            userServiceClient.createUser(userDTO);
+        }
     }
 }

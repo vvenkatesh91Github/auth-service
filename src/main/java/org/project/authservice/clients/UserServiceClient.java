@@ -5,7 +5,6 @@ import org.project.authservice.dtos.UserDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
@@ -26,8 +25,13 @@ public class UserServiceClient {
             ResponseEntity<UserDTO> response =
                     restTemplate.getForEntity(url, UserDTO.class, email);
             return Optional.ofNullable(response.getBody());
-        } catch (HttpClientErrorException.NotFound ex) {
+        } catch (RuntimeException ex) {
             return Optional.empty();
         }
+    }
+
+    public void createUser(UserDTO userDTO) {
+        String url = userServiceBaseUrl + "/users";
+        restTemplate.postForEntity(url, userDTO, Void.class);
     }
 }
