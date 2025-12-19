@@ -43,3 +43,8 @@ app.jwt.expiration-ms=3600000
 
 # Service Communication
 services.user-service.url=http://localhost:8080
+```
+
+# Note:
+* This service is hosted https://auth.localhost:8081
+* Ensure SSL is configured for secure communication. (https://github.com/vvenkatesh91Github/api-gateway/blob/master/README.md)
