@@ -19,7 +19,7 @@ public class UserServiceClient {
     private String userServiceBaseUrl;
 
     public Optional<UserDTO> getUserByEmail(String email) {
-        String url = userServiceBaseUrl + "/users/email/{email}";
+        String url = userServiceBaseUrl + "/v1/users/email/{email}";
 
         try {
             ResponseEntity<UserDTO> response =
@@ -31,7 +31,7 @@ public class UserServiceClient {
     }
 
     public void createUser(UserDTO userDTO) {
-        String url = userServiceBaseUrl + "/users";
+        String url = userServiceBaseUrl + "/v2/users";
         restTemplate.postForEntity(url, userDTO, Void.class);
     }
 }
